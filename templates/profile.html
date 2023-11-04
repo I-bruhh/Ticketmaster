@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/concerts">Concerts</a></li>
+            <li><a href="/profile">Profile</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>My Profile</h1>
+    </header>
+
+    <section class="profile-info">
+        <img src="{{ url_for('static', filename='clown.png') }}" alt="My Profile Picture">
+        <h2>John Doe</h2>
+        <p>Email: john.doe@example.com</p>
+        <p>Location: City, Country</p>
+        <p>Phone: +123-456-7890</p>
+    </section>
+
+    <section class="profile-description">
+        <h2>About Me</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac mi dui. Vivamus nec volutpat orci. Nullam auctor eget odio id blandit.</p>
+    </section>
+
+    <section class="profile-education">
+        <h2>Education</h2>
+        <p>University Name - Bachelor's Degree in Computer Science</p>
+    </section>
+
+    <section class="profile-experience">
+        <h2>Work Experience</h2>
+        <p>Company Name - Software Developer (2018 - Present)</p>
+    </section>
+</body>
+</html>

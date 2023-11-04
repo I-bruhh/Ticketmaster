@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ticket Master Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Add your JavaScript script here -->
+    <script>
+        function showPopup(message) {
+            alert(message);
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/concerts">Concerts</a></li>
+            <li><a href="/profile">Profile</a></li>
+        </ul>
+    </nav>
+
+    <h1>Ticket Master Dashboard</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Dates</th>
+            <th>Venues</th>
+            <th>Tickets Available</th>
+            <th>Start Ticket Sale</th>
+            <th>End Ticket Sale</th>
+            <th>Limit Per Person</th>
+            <th>Total Tickets for Sale</th>
+        </tr>
+        {% for concert in concerts %}
+        <tr>
+            <td><a href="/concert/{{ loop.index0 }}">{{ concert['name'] }}</a></td>
+            <td>{{ concert['dates'] | join(', ') }}</td>
+            <td>{{ concert['venues'] | join(', ') }}</td>
+            <td>{{ concert['categories'] | sum }}</td>
+            <td>{{ concert['start_ticket_sale'] }}</td>
+            <td>{{ concert['end_ticket_sale'] }}</td>
+            <td>{{ concert['limit_per_person'] }}</td>
+            <td>{{ concert['total_tickets_for_sale'] }}</td>
+            <td><a href="/join_waiting_room/{{ loop.index0 }}">Join Waiting Room</a></td>
+            <td><a href="/start_sale/{{ loop.index0 }}">Start Sale</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

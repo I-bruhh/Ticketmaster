@@ -151,5 +151,5 @@ blockchain.ticketing_system.setup_tickets(1000)
 blockchain.ticketing_system.add_user_to_waiting_room(0, 0)
 blockchain.ticketing_system.start_sale()
 
-if __name__ == '__main__':
-    blockchain.print_chain()
+#if __name__ == '__main__':
+ #   blockchain.print_chain()

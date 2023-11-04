@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Concert Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function showPopup(message) {
+            alert(message);
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/concerts">Concerts</a></li>
+            <li><a href="/profile">Profile</a></li>
+        </ul>
+    </nav>
+
+    <h1>Concert Details</h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Dates</th>
+            <th>Venues</th>
+            <th>Tickets Available</th>
+            <th>Start Ticket Sale</th>
+            <th>End Ticket Sale</th>
+            <th>Limit Per Person</th>
+            <th>Total Tickets for Sale</th>
+        </tr>
+        <tr>
+            <td>{{ concert.name }}</td>
+            <td>{{ concert.dates | join(', ') }}</td>
+            <td>{{ concert.venues | join(', ') }}</td>
+            <td>{{ concert.categories | sum }}</td>
+            <td>{{ concert.start_ticket_sale }}</td>
+            <td>{{ concert.end_ticket_sale }}</td>
+            <td>{{ concert.limit_per_person }}</td>
+            <td>{{ concert.total_tickets_for_sale }}</td>
+        </tr>
+    </table>
+
+    <h2>Select Date, Venue, and Ticket Category</h2>
+    <form action="/purchase" method="post">
+        <input type="hidden" name="concert_name" value="{{ concert.name }}">
+        <input type="hidden" name="concert_id" value="{{ loop.index0 }}">
+        <label for="date">Select Date:</label>
+        <select id="date" name="date">
+            {% for date_option in concert.dates %}
+                <option value="{{ date_option }}">{{ date_option }}</option>
+            {% endfor %}
+        </select>
+        <label for="venue">Select Venue:</label>
+        <select id="venue" name="venue">
+            {% for venue_option in concert.venues %}
+                <option value="{{ venue_option }}">{{ venue_option }}</option>
+            {% endfor %}
+        </select>
+        <label for="category">Select Category:</label>
+        <select id="category" name="category">
+            {% for category_option in concert.categories %}
+                <option value="{{ category_option }}">{{ category_option }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Purchase Tickets" onclick="showPopup('Successful purchase! Your ticket summary: Concert: {{ concert.name }}, Date: ' + document.getElementById('date').value + ', Venue: ' + document.getElementById('venue').value + ', Category: ' + document.getElementById('category').value)">
+    </form>
+</body>
+</html>

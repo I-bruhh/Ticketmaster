@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Join Waiting Room</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Join Waiting Room</h1>
+    <form action="/join_waiting_room/{{ concert_id }}" method="POST">
+        <label for="arrival_time">Arrival Time:</label>
+        <input type="text" id="arrival_time" name="arrival_time" required>
+        <input type="submit" value="Join Waiting Room">
+    </form>
+</body>
+</html>
