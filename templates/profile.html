@@ -8,8 +8,8 @@
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/concerts">Concerts</a></li>
-            <li><a href="/profile">Profile</a></li>
+            <li><a href="{{ url_for('concerts.concerts') }}">Concerts</a></li>
+            <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
         </ul>
     </nav>
 
@@ -19,25 +19,26 @@
 
     <section class="profile-info">
         <img src="{{ url_for('static', filename='clown.png') }}" alt="My Profile Picture">
-        <h2>John Doe</h2>
-        <p>Email: john.doe@example.com</p>
-        <p>Location: City, Country</p>
-        <p>Phone: +123-456-7890</p>
+        <h2>{{ user.username }}</h2>
+        <p>Email: {{ user.email }}</p>
+        <p>Location: {{ user.location }}</p>
+        <p>Phone: {{ user.phone }}</p>
+        <a href="{{ url_for('profile.edit_profile') }}" class="edit-profile-button">Edit Profile</a> <!-- Add the Edit Profile button here -->
     </section>
 
     <section class="profile-description">
         <h2>About Me</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ac mi dui. Vivamus nec volutpat orci. Nullam auctor eget odio id blandit.</p>
+        <p>{{ user.about_me }}</p>
     </section>
 
     <section class="profile-education">
         <h2>Education</h2>
-        <p>University Name - Bachelor's Degree in Computer Science</p>
+        <p>{{ user.education }}</p>
     </section>
 
     <section class="profile-experience">
         <h2>Work Experience</h2>
-        <p>Company Name - Software Developer (2018 - Present)</p>
+        <p>{{ user.work_experience }}</p>
     </section>
 </body>
 </html>

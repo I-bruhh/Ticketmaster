@@ -13,8 +13,8 @@
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/concerts">Concerts</a></li>
-            <li><a href="/profile">Profile</a></li>
+            <li><a href="{{ url_for('concerts.concerts') }}">Concerts</a></li>
+            <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
         </ul>
     </nav>
 
@@ -32,20 +32,20 @@
         </tr>
         <tr>
             <td>{{ concert.name }}</td>
-            <td>{{ concert.dates | join(', ') }}</td>
-            <td>{{ concert.venues | join(', ') }}</td>
-            <td>{{ concert.categories | sum }}</td>
-            <td>{{ concert.start_ticket_sale }}</td>
-            <td>{{ concert.end_ticket_sale }}</td>
-            <td>{{ concert.limit_per_person }}</td>
-            <td>{{ concert.total_tickets_for_sale }}</td>
+            <td>{{ concert['dates'] | join('') }}</td>
+            <td>{{ concert['venues'] | join('') }}</td>
+            <td>{{ concert['categories'] | join('') }}</td>
+            <td>{{ concert['start_ticket_sale'] }}</td>
+            <td>{{ concert['end_ticket_sale'] }}</td>
+            <td>{{ concert['limit_per_person'] }}</td>
+            <td>{{ concert['total_tickets_for_sale'] }}</td>
         </tr>
     </table>
 
-    <h2>Select Date, Venue, and Ticket Category</h2>
-    <form action="/purchase" method="post">
+    <h2>Select Date, Venue, Ticket Category, and Quantity</h2>
+    <form action="/purchase/purchase" method="post">
         <input type="hidden" name="concert_name" value="{{ concert.name }}">
-        <input type="hidden" name="concert_id" value="{{ loop.index0 }}">
+        <input type="hidden" name="concert_id" value="{{ concert.id }}">
         <label for="date">Select Date:</label>
         <select id="date" name="date">
             {% for date_option in concert.dates %}
@@ -64,7 +64,9 @@
                 <option value="{{ category_option }}">{{ category_option }}</option>
             {% endfor %}
         </select>
-        <input type="submit" value="Purchase Tickets" onclick="showPopup('Successful purchase! Your ticket summary: Concert: {{ concert.name }}, Date: ' + document.getElementById('date').value + ', Venue: ' + document.getElementById('venue').value + ', Category: ' + document.getElementById('category').value)">
+        <label for="quantity">Select Quantity (Limit: {{ concert.limit_per_person }}):</label>
+        <input type="number" id="quantity" name="quantity" min="1" max="{{ concert.limit_per_person }}">
+        <input type="submit" value="Purchase Tickets" onclick="showPopup('Confirm purchase summary: Concert: {{ concert.name }}, Date: ' + document.getElementById('date').value + ', Venue: ' + document.getElementById('venue').value + ', Category: ' + document.getElementById('category').value + ', Quantity: ' + document.getElementById('quantity').value)">
     </form>
 </body>
 </html>
