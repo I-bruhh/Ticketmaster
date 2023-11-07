@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirmation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function showPopup(message) {
+            alert(message);
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="{{ url_for('concerts.concerts') }}">Concerts</a></li>
+            <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
+        </ul>
+    </nav>
+
+    <h1>Confirmation</h1>
+    <p>Your purchase has been confirmed. Thank you for buying tickets to {{ concert.name }}!</p>
+
+    <button onclick="showPopup('Purchase Successful!')">OK</button>
+</body>
+</html>

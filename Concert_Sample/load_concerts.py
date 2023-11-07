@@ -1,6 +1,14 @@
 import json
+import sys
+import os
+
+# Add the root directory to the Python path
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, root_dir)
+
+# Now you can import the 'models' module
 from models import db, Concert
-from main import app  # Replace with the actual import path of your Flask app
+from app import app  # Replace with the actual import path of your Flask app
 
 # Create an application context
 with app.app_context():

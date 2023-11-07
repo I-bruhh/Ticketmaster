@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart summary</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+    // JavaScript function to show a popup message
+    function showPopup(message) {
+        alert(message);
+    }
+
+    // Check if the message parameter is present in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('message');
+
+    // Display the message in a popup if it exists
+    if (message) {
+        showPopup(message);
+    }
+
+    // Function to redirect to the ticket_master_dashboard
+    function redirectToDashboard() {
+        window.location.href = "{{ url_for('concerts.concerts') }}";
+    }
+    </script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="{{ url_for('concerts.concerts') }}">Concerts</a></li>
+            <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
+        </ul>
+    </nav>
+
+    <h1>Summary/Cart</h1>
+    <h2>Selected Options</h2>
+    <table>
+        <tr>
+            <th>Concert</th>
+            <th>Date</th>
+            <th>Venue</th>
+            <th>Category</th>
+            <th>Quantity</th>
+        </tr>
+        <tr>
+            <td>{{ concert.name }}</td>
+            <td>{{ selected_options.date }}</td>
+            <td>{{ selected_options.venue }}</td>
+            <td>{{ selected_options.category }}</td>
+            <td>{{ selected_options.quantity }}</td>
+        </tr>
+    </table>
+
+    <h2>Payment</h2>
+    <form action="{{ url_for('purchase.confirm', concert_id=concert.id) }}" method="post">
+        <input type="hidden" name="concert_id" value="{{ concert.id }}">
+        <input type="hidden" name="concert_name" value="{{ concert.name }}">
+        <input type="hidden" name="concert_date" value="{{ selected_options.date }}">
+        <input type="hidden" name="concert_venue" value="{{ selected_options.venue }}">
+        <input type="hidden" name="ticket_category" value="{{ selected_options.category }}">
+        <input type="hidden" name="ticket_quantity" value="{{ selected_options.quantity }}">
+        <label for="card_holder">Card Holder Name:</label>
+        <input type="text" id="card_holder" name="card_holder" value="John Doe">
+
+        <label for="card_number">Card Number:</label>
+        <input type="text" id="card_number" name="card_number" value="4111 1111 1111 1111">
+
+        <label for="expiration_date">Expiration Date (MM/YY):</label>
+        <input type="text" id="expiration_date" name="expiration_date" value="12/25">
+
+        <label for="cvv">CVV:</label>
+        <input type="text" id="cvv" name="cvv" value="123">
+
+        <input type="submit" value="Purchase Tickets" onclick="showPopup('Confirm purchase summary: Concert: {{ concert.name }}, Date: {{ selected_options.date }}, Venue: {{ selected_options.venue }}, Category: {{ selected_options.category }}, Quantity: {{ selected_options.quantity }}')">
+    </form>
+
+</body>
+</html>

@@ -35,6 +35,7 @@ class Purchase(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     concert_id = db.Column(db.Integer, db.ForeignKey('concert.id'), nullable=False)
+    concert_name = db.Column(db.Integer, nullable=False)
     date = db.Column(db.String(20), nullable=False)
     venue = db.Column(db.String(100), nullable=False)
     category = db.Column(db.String(100), nullable=False)
