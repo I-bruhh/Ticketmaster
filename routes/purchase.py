@@ -1,7 +1,7 @@
-from flask import Blueprint, request, render_template, redirect, url_for, jsonify, session
-
-# Import your Purchase model and database instance
-from models import User, Concert, Purchase, db
+from flask import Blueprint, request, render_template, redirect, url_for, session
+from routes.auth_db import auth_db_bp
+from routes.concert_db import concert_db_bp
+from routes.purchase_db import purchase_db_bp
 
 # Create a Blueprint for purchase-related routes
 purchase_bp = Blueprint("purchase", __name__)
@@ -9,7 +9,7 @@ purchase_bp = Blueprint("purchase", __name__)
 
 @purchase_bp.route("/concert/<int:concert_id>/booth", methods=["GET", "POST"])
 def booth(concert_id):
-    concert = Concert.query.get(concert_id)
+    concert = concert_db_bp.get_concert_by_id(concert_id)  # Use concert_db_bp function
 
     # Handle GET request to render the booth page
     return render_template("booth.html", concert=concert)
@@ -17,8 +17,8 @@ def booth(concert_id):
 
 @purchase_bp.route("/concert/<int:concert_id>/summary", methods=["POST"])
 def summary(concert_id):
-    concert = Concert.query.get(concert_id)
-    user = User.query.get(session.get('user_id'))
+    concert = concert_db_bp.get_concert_by_id(concert_id)  # Use concert_db_bp function
+    user = auth_db_bp.get_user_by_id(session.get('user_id'))  # Use user_db_bp function
 
     if request.method == "POST":
         date = request.form.get("date")
@@ -43,9 +43,9 @@ def summary(concert_id):
     return redirect(url_for("index"))
 
 
-@purchase_bp.route("/concert/<int:concert_id>/confirm", methods=["POST"])
-def confirm(concert_id):
-    user = User.query.get(session.get('user_id'))
+@purchase_bp.route("/concert/confirm", methods=["POST"])
+def confirm():
+    user = auth_db_bp.get_user_by_id(session.get('user_id'))  # Use user_db_bp function
 
     if request.method == "POST":
         concert_id = request.form.get("concert_id")
@@ -56,12 +56,21 @@ def confirm(concert_id):
         quantity = request.form.get("ticket_quantity")
 
         # Create a new purchase and add it to the database
-        purchase = Purchase(user_id=user.id, concert_id=concert_id, concert_name=concert_name, date=date, venue=venue, category=category, quantity=quantity)
-        db.session.add(purchase)
-        db.session.commit()
+        purchase_data = {
+            'user_id': user.id,
+            'concert_id': concert_id,
+            'concert_name': concert_name,
+            'date': date,
+            'venue': venue,
+            'category': category,
+            'quantity': quantity
+        }
+
+        purchase_db_bp.create_purchase(purchase_data)  # Use purchase_db_bp function
 
         # Construct a success message
-        message = f"Successful purchase! Your ticket summary: Date: {date}, Venue: {venue}, Category: {category}, Quantity: {quantity}"
+        message = f"Successful purchase! Your ticket summary: Date: {date}," \
+                  f" Venue: {venue}, Category: {category}, Quantity: {quantity}"
 
         return redirect(url_for("concerts.concerts", message=message))
 

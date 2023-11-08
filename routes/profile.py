@@ -1,49 +1,85 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
-from models import User, db  # Import the specific database instance you need
+import boto3
 
-# Create a Blueprint for profile-related routes
 profile_bp = Blueprint("profile", __name__)
+
+# Initialize the DynamoDB client
+dynamodb = boto3.client('dynamodb', region_name='ap-southeast-1', aws_access_key_id='YOUR_ACCESS_KEY', aws_secret_access_key='YOUR_SECRET_KEY')
+
+# Define the DynamoDB table name for the User model
+user_table_name = 'User'
 
 
 @profile_bp.route("/profile")
 def view_profile():
-    user = User.query.get(session.get('user_id'))
-    return render_template("profile.html", user=user)
+    user_id = session.get('user_id')
+
+    if user_id:
+        try:
+            response = dynamodb.get_item(
+                TableName=user_table_name,
+                Key={'user_id': {'N': user_id}}
+            )
+            item = response.get('Item')
+
+            if item:
+                user = dict((k, v['S']) for k, v in item.items())
+                return render_template("profile.html", user=user)
+            else:
+                return "User not found"
+        except Exception as e:
+            return str(e), 500
+
+    return redirect(url_for("login"))
 
 
 @profile_bp.route("/edit_profile", methods=["GET", "POST"])
 def edit_profile():
-    user = User.query.get(session.get('user_id'))
+    user_id = session.get('user_id')
 
-    if user:
-        if request.method == "POST":
-            # Handle user profile updates
-            new_username = request.form.get("new_username")
-            new_email = request.form.get("new_email")
-            new_location = request.form.get("new_location")
-            new_phone = request.form.get("new_phone")
-            new_about_me = request.form.get("new_about_me")
-            new_education = request.form.get("new_education")
-            new_work_experience = request.form.get("new_work_experience")
+    if user_id:
+        try:
+            response = dynamodb.get_item(
+                TableName=user_table_name,
+                Key={'user_id': {'N': user_id}}
+            )
+            item = response.get('Item')
 
-            # Update the user's information in the database and commit the changes
-            user.username = new_username
-            user.email = new_email
-            user.location = new_location
-            user.phone = new_phone
-            user.about_me = new_about_me
-            user.education = new_education
-            user.work_experience = new_work_experience
+            if item:
+                user = dict((k, v['S']) for k, v in item.items())
 
-            db.session.commit()
+                if request.method == "POST":
+                    new_username = request.form.get("new_username")
+                    new_email = request.form.get("new_email")
+                    new_location = request.form.get("new_location")
+                    new_phone = request.form.get("new_phone")
+                    new_about_me = request.form.get("new_about_me")
+                    new_education = request.form.get("new_education")
+                    new_work_experience = request.form.get("new_work_experience")
 
-            # Redirect to the user's profile page or display a success message
-            return redirect(url_for("profile.view_profile"))
+                    user_data = {
+                        'user_id': user_id,
+                        'username': new_username,
+                        'email': new_email,
+                        'location': new_location,
+                        'phone': new_phone,
+                        'about_me': new_about_me,
+                        'education': new_education,
+                        'work_experience': new_work_experience
+                    }
 
-        # Render the profile editing form
-        return render_template("edit_profile.html", user=user)
+                    response = dynamodb.put_item(
+                        TableName=user_table_name,
+                        Item={k: {'S': str(v)} for k, v in user_data.items()}
+                    )
 
-    # Handle the case when no user is logged in
+                    return redirect(url_for("profile.view_profile"))
+
+                return render_template("edit_profile.html", user=user)
+
+        except Exception as e:
+            return str(e), 500
+
     return redirect(url_for("login"))
 
-# Add more profile-related routes and views as needed
+# Add more profile-related routes
