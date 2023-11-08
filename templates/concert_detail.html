@@ -36,6 +36,6 @@
             <td>{{ concert['total_tickets_for_sale'] }}</td>
         </tr>
     </table>
-    <a href="{{ url_for('purchase.booth', concert_id=concert.id) }}"><button>Buy Tickets</button></a>
+    <a href="{{ url_for('ticket_fairness.waiting_room', concert_id=concert.id) }}"><button>Buy Tickets</button></a>
 </body>
 </html>

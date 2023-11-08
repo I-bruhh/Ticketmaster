@@ -49,8 +49,6 @@
             <td>{{ concert['end_ticket_sale'] }}</td>
             <td>{{ concert['limit_per_person'] }}</td>
             <td>{{ concert['total_tickets_for_sale'] }}</td>
-            <td><a href="/join_waiting_room/{{ loop.index0 }}">Join Waiting Room</a></td>
-            <td><a href="/start_sale/{{ loop.index0 }}">Start Sale</a></td>
         </tr>
         {% endfor %}
     </table>

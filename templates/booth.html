@@ -49,20 +49,5 @@
         </select>
         <input type="submit" value="Proceed">
     </form>
-    <script>
-        // JavaScript function to check the start_ticket_sale date
-        function checkTicketSaleDate() {
-            var startTicketSaleDate = new Date("{{ concert.start_ticket_sale }}");
-            var currentDate = new Date();
-
-            if (currentDate < startTicketSaleDate) {
-                // Redirect to the waiting room page
-                window.location.href = "{{ url_for('ticket_fairness.waiting_room', concert_id=concert.id) }}";
-            }
-        }
-
-        // Call the function to check the date when the page loads
-        window.onload = checkTicketSaleDate;
-    </script>
 </body>
 </html>
