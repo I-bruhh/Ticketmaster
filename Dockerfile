@@ -35,7 +35,14 @@ RUN adduser \
 RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt \
-    pip install clang
+    pip install clang \
+    pip install boto3
+
+# Set AWS credentials as environment variables
+ENV AWS_ACCESS_KEY_ID=AKIA2RDWGAQQAOLV3BDA
+ENV AWS_SECRET_ACCESS_KEY=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
+ENV AWS_DEFAULT_REGION=ap-southeast-1
+
 
 # Switch to the non-privileged user to run the application.
 USER appuser
@@ -47,4 +54,4 @@ COPY . .
 EXPOSE 5000
 
 # Run the application.
-CMD flask --app main run
+CMD flask --app app run
