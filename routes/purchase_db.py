@@ -5,13 +5,13 @@ import boto3
 dynamodb = boto3.client('dynamodb')
 
 # Define the DynamoDB table name for Purchases
-purchases_table_name = 'Purchases'
+PURCHASES_TABLE_NAME = 'Purchases'
 
 def get_all_purchases():
     try:
         # Access the DynamoDB table to list all purchases
         response = dynamodb.scan(
-            TableName=purchases_table_name
+            TableName = PURCHASES_TABLE_NAME
         )
         items = response.get('Items', [])
         purchases = [dict((k, v['S']) for k, v in item.items()) for item in items]
@@ -23,7 +23,7 @@ def get_purchase(purchase_id):
     try:
         # Access the DynamoDB table to get a specific purchase by purchase_id
         response = dynamodb.get_item(
-            TableName=purchases_table_name,
+            TableName = PURCHASES_TABLE_NAME,
             Key={
                 'purchase_id': {'N': str(purchase_id)}
             }
@@ -41,7 +41,7 @@ def create_purchase(purchase_data):
     try:
         # Add the purchase data to DynamoDB
         response = dynamodb.put_item(
-            TableName=purchases_table_name,
+            TableName = PURCHASES_TABLE_NAME,
             Item={k: {'S': str(v)} for k, v in purchase_data.items()}
         )
         return jsonify({'message': 'Purchase created successfully'}), 201

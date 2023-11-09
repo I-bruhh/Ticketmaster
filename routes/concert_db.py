@@ -1,19 +1,17 @@
 import boto3
-from flask import Blueprint, jsonify
-
-concert_db_bp = Blueprint('concert_db', __name__)
+from flask import jsonify
 
 # Initialize the DynamoDB client
 dynamodb = boto3.client('dynamodb')
 
 # Define the DynamoDB table name for Concerts
-concerts_table_name = 'Concert'
+CONCERTS_TABLE_NAME = 'Concert'
 
 def get_all_concerts():
     try:
         # Access the DynamoDB table to list all concerts
         response = dynamodb.scan(
-            TableName=concerts_table_name
+            TableName = CONCERTS_TABLE_NAME
         )
         items = response.get('Items', [])
         concerts = []
@@ -40,7 +38,7 @@ def get_concert_by_id(concert_id):
     try:
         # Access the DynamoDB table to get a specific concert by concert_id
         response = dynamodb.get_item(
-            TableName=concerts_table_name,
+            TableName = CONCERTS_TABLE_NAME,
             Key={
                 'concert_id': {
                     'N': str(concert_id)
