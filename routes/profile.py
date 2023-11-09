@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 import boto3
+import auth_db
 
 profile_bp = Blueprint("profile", __name__)
 
@@ -12,25 +13,16 @@ user_table_name = 'User'
 
 @profile_bp.route("/profile")
 def view_profile():
-    user_id = session.get('user_id')
+    username = session.get('username')
+    user = auth_db.get_user_by_username(username)
 
-    if user_id:
-        try:
-            response = dynamodb.get_item(
-                TableName=user_table_name,
-                Key={'user_id': {'N': user_id}}
-            )
-            item = response.get('Item')
-
-            if item:
-                user = dict((k, v['S']) for k, v in item.items())
-                return render_template("profile.html", user=user)
-            else:
-                return "User not found"
-        except Exception as e:
-            return str(e), 500
-
-    return redirect(url_for("login"))
+    try:
+        if user:
+            return render_template("profile.html", user=user)
+        else:
+            return "User not found"
+    except Exception as e:
+        return str(e), 500
 
 
 @profile_bp.route("/edit_profile", methods=["GET", "POST"])

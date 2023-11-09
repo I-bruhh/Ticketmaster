@@ -18,7 +18,7 @@ def booth(concert_id):
 @purchase_bp.route("/concert/<int:concert_id>/summary", methods=["POST"])
 def summary(concert_id):
     concert = concert_db.get_concert_by_id(concert_id)
-    user = auth_db.get_user_by_id(session.get('user_id'))  # need change this
+    user = auth_db.get_user_by_username(session.get('username'))
 
     if request.method == "POST":
         date = request.form.get("date")
@@ -45,7 +45,7 @@ def summary(concert_id):
 
 @purchase_bp.route("/concert/confirm", methods=["POST"])
 def confirm():
-    user = auth_db.get_user_by_id(session.get('user_id'))  # need change this
+    user = auth_db.get_user_by_username(session.get('username'))
 
     if request.method == "POST":
         concert_id = request.form.get("concert_id")
