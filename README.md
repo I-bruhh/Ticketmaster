@@ -5,6 +5,12 @@ Dependencies required:
 *Flask*
 - To install: run on env terminal "pip install Flask"
 
+*Config*
+- To install: run on env terminal "pip install config"
+
+*Boto3*
+- To install: run on env terminal "pip install boto3"
+
 Microservices:
 1. Flask - Frontend
 2. DynamoDB - Backend
