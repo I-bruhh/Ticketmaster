@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 import boto3
-import auth_db
+import routes.auth_db as auth_db
 
 profile_bp = Blueprint("profile", __name__)
 
