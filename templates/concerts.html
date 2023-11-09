@@ -41,7 +41,7 @@
         </tr>
         {% for concert in concerts %}
         <tr>
-            <td><a href="{{ url_for('concerts.concert_detail', concert_id=concert.id) }}">{{ concert.name }}</a></td>
+            <td><a href="{{ url_for('concerts.concert_detail', concert_id=concert.concert_id) }}">{{ concert.name }}</a></td>
             <td>{{ concert['dates'] }}</td>
             <td>{{ concert['venues'] }}</td>
             <td>{{ concert['categories'] }}</td>

@@ -4,9 +4,7 @@ from flask import Blueprint, jsonify, request
 auth_db_bp = Blueprint('auth_db', __name__)
 
 # Initialize the DynamoDB client
-dynamodb = boto3.client('dynamodb', region_name='ap-southeast-1',
-                        aws_access_key_id='YOUR_ACCESS_KEY_ID',
-                        aws_secret_access_key='YOUR_SECRET_ACCESS_KEY')
+dynamodb = boto3.client('dynamodb')
 
 # Define the DynamoDB table name for the User model
 user_table_name = 'User'
@@ -41,7 +39,7 @@ def get_user_by_username(username):
         return jsonify({'error': str(e)}), 500
 
 
-@auth_db_bp.route('/users', methods=['POST'])
+@auth_db_bp.route('/create_users', methods=['POST'])
 def create_user():
     try:
         user_data = request.json
