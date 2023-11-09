@@ -4,12 +4,10 @@ from flask import Blueprint, jsonify
 concert_db_bp = Blueprint('concert_db', __name__)
 
 # Initialize the DynamoDB client
-dynamodb = boto3.client('dynamodb', region_name='ap-southeast-1',
-                        aws_access_key_id='YOUR_ACCESS_KEY_ID',
-                        aws_secret_access_key='YOUR_SECRET_ACCESS_KEY')
+dynamodb = boto3.client('dynamodb')
 
 # Define the DynamoDB table name for Concerts
-concerts_table_name = 'Concerts'
+concerts_table_name = 'Concert'
 
 
 @concert_db_bp.route('/concerts', methods=['GET'])
@@ -20,7 +18,22 @@ def get_all_concerts():
             TableName=concerts_table_name
         )
         items = response.get('Items', [])
-        concerts = [dict((k, v['S']) for k, v in item.items()) for item in items]
+        concerts = []
+
+        for item in items:
+            formatted_item = {
+                "concert_id": item["concert_id"]["N"],
+                "name": item["name"]["S"],
+                "dates": [date["S"] for date in item["dates"]["L"]],
+                "venues": [venue["S"] for venue in item["venues"]["L"]],
+                "categories": [int(category["N"]) for category in item["categories"]["L"]],
+                "start_ticket_sale": item["start_ticket_sale"]["S"],
+                "end_ticket_sale": item["end_ticket_sale"]["S"],
+                "limit_per_person": int(item["limit_per_person"]["N"]),
+                "total_tickets_for_sale": int(item["total_tickets_for_sale"]["N"]),
+            }
+            concerts.append(formatted_item)
+
         return jsonify(concerts)
     except Exception as e:
         return jsonify({'error': str(e)}), 500

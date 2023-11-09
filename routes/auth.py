@@ -4,9 +4,7 @@ import requests
 
 auth_bp = Blueprint('auth', __name__)
 
-
-# Define the base URL for the auth_db_bp blueprint
-auth_db_base_url = 'http://127.0.0.1:5432'  # Update with the correct URL
+base_url = 'http://127.0.0.1:5000'
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
@@ -16,13 +14,13 @@ def login():
         password = request.form.get('password')
 
         # Make a GET request to fetch the user data
-        response = requests.get(f'{auth_db_base_url}/auth_db/users/{username}')
+        response = requests.get(f'{base_url}/users/{username}')
 
         if response.status_code == 200:
             user_data = response.json()
 
             if user_data and check_password_hash(user_data['password'], password):
-                session['user_id'] = user_data['user_id']
+                session['username'] = user_data['username']
                 return redirect(url_for('concerts.concerts'))
             else:
                 return "Login failed"
@@ -37,7 +35,7 @@ def register():
         password = request.form.get('password')
 
         # Make a GET request to check if the username already exists
-        existing_user = requests.get(f'{auth_db_base_url}/auth_db/users/{username}')
+        existing_user = requests.get(f'{base_url}/create_users/{username}')
 
         if existing_user.status_code == 200:
             return "Username already exists"
@@ -49,7 +47,7 @@ def register():
             }
 
             # Make a POST request to create the user
-            create_user_response = requests.post(f'{auth_db_base_url}/auth_db/users', json=user_data)
+            create_user_response = requests.post(f'{base_url}/create_users', json=user_data)
 
             if create_user_response.status_code == 200:
                 return redirect(url_for('auth.login'))

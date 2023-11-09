@@ -5,8 +5,8 @@ purchase_db_bp = Blueprint('purchase_db', __name__)
 
 # Initialize the DynamoDB client
 dynamodb = boto3.client('dynamodb', region_name='ap-southeast-1',
-                        aws_access_key_id='YOUR_ACCESS_KEY_ID',
-                        aws_secret_access_key='YOUR_SECRET_ACCESS_KEY')
+                        aws_access_key_id='AKIA2RDWGAQQAOLV3BDA',
+                        aws_secret_access_key='fp+myMCt/k0+ANJxBCyC0ZRZte2jn0RX12xHJUzB')
 
 # Define the DynamoDB table name for Purchases
 purchases_table_name = 'Purchases'

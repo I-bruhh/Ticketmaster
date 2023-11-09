@@ -22,6 +22,7 @@ app.register_blueprint(auth_db_bp)
 app.register_blueprint(concert_db_bp)
 app.register_blueprint(purchase_db_bp)
 
+
 @app.route('/')
 def index():
     return redirect(url_for('auth.login'))
