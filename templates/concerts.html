@@ -1,56 +1,67 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Ticket Master Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='concerts.css') }}"
+    />
     <script>
-        function showPopup(message) {
-            alert(message);
-        }
+      function showPopup(message) {
+        alert(message);
+      }
 
-        // Check if the message parameter is present in the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const message = urlParams.get('message');
+      // Check if the message parameter is present in the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const message = urlParams.get("message");
 
-        // Display the message in a popup if it exists
-        if (message) {
-            showPopup(message);
-        }
+      // Display the message in a popup if it exists
+      if (message) {
+        showPopup(message);
+      }
     </script>
-</head>
-<body>
+  </head>
+  <body>
     <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="{{ url_for('concerts.concerts') }}">Concerts</a></li>
-            <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
-        </ul>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="{{ url_for('concerts.concerts') }}">Concerts</a></li>
+        <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
+      </ul>
     </nav>
 
     <h1>Ticket Master Dashboard</h1>
     <table>
-        <tr>
-            <th>Name</th>
-            <th>Dates</th>
-            <th>Venues</th>
-            <th>Tickets Available</th>
-            <th>Start Ticket Sale</th>
-            <th>End Ticket Sale</th>
-            <th>Limit Per Person</th>
-            <th>Total Tickets for Sale</th>
-        </tr>
-        {% for concert in concerts %}
-        <tr>
-            <td><a href="{{ url_for('concerts.concert_detail', concert_id=concert.concert_id) }}">{{ concert.name }}</a></td>
-            <td>{{ concert['dates'] }}</td>
-            <td>{{ concert['venues'] }}</td>
-            <td>{{ concert['categories'] }}</td>
-            <td>{{ concert['start_ticket_sale'] }}</td>
-            <td>{{ concert['end_ticket_sale'] }}</td>
-            <td>{{ concert['limit_per_person'] }}</td>
-            <td>{{ concert['total_tickets_for_sale'] }}</td>
-        </tr>
-        {% endfor %}
+      <tr>
+        <th>Name</th>
+        <th>Dates</th>
+        <th>Venues</th>
+        <th>Tickets Available</th>
+        <th>Start Ticket Sale</th>
+        <th>End Ticket Sale</th>
+        <th>Limit Per Person</th>
+        <th>Total Tickets for Sale</th>
+      </tr>
+      {% for concert in concerts %}
+      <tr>
+        <td>
+          <a
+            href="{{ url_for('concerts.concert_detail', concert_id=concert.concert_id) }}"
+            >{{ concert.name }}</a
+          >
+        </td>
+        <td>{{ concert['dates'] }}</td>
+        <td>{{ concert['venues'] }}</td>
+        <td>{{ concert['categories'] }}</td>
+        <td>{{ concert['start_ticket_sale'] }}</td>
+        <td>{{ concert['end_ticket_sale'] }}</td>
+        <td>{{ concert['limit_per_person'] }}</td>
+        <td>{{ concert['total_tickets_for_sale'] }}</td>
+      </tr>
+      {% endfor %}
     </table>
-</body>
+    <footer>
+      <p>&copy; 2023 Ticket Master</p>
+    </footer>
+  </body>
 </html>
