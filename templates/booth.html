@@ -10,13 +10,15 @@
     </script>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="{{ url_for('concert.concerts') }}">Concerts</a></li>
-            <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
-        </ul>
-    </nav>
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="{{ url_for('concert.concerts') }}">Concerts</a></li>
+    <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
+    <!-- Add the following line for the logout link -->
+    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+  </ul>
+</nav>
 
     <h1>Booth Page</h1>
     <h2>Select Date, Venue, Ticket Category, and Quantity</h2>

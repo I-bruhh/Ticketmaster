@@ -25,13 +25,15 @@
     </script>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="{{ url_for('concert.concerts') }}">Concerts</a></li>
-            <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
-        </ul>
-    </nav>
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="{{ url_for('concert.concerts') }}">Concerts</a></li>
+    <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
+    <!-- Add the following line for the logout link -->
+    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+  </ul>
+</nav>
 
     <h1>Summary/Cart</h1>
     <h2>Selected Options</h2>

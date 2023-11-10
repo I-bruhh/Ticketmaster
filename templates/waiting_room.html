@@ -7,20 +7,22 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='concerts.css') }}">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="{{ url_for('concert.concerts') }}">Concerts</a></li>
-            <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
-        </ul>
-    </nav>
+<nav>
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="{{ url_for('concert.concerts') }}">Concerts</a></li>
+    <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
+    <!-- Add the following line for the logout link -->
+    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+  </ul>
+</nav>
 
     <div class="content">
         <h1>Waiting Room</h1>
 
         <div class="content">
             <p>You are in the waiting room. Please wait for your turn to purchase tickets.</p>
-            <p id="position-info">Your current position in the queue: <span id="position">{{ queue_position }}</span></p>
+            <p id="position-info">Your current cluster number: <span id="position">{{ cluster_number }}</span></p>
         </div>
 
         <h1>Concert Details</h1>
@@ -43,13 +45,13 @@
                 .then(response => response.json())
                 .then(data => {
                     // Update UI based on server response
-                    if (data.queuePosition !== null) {
-                        document.getElementById("position").innerText = "Your position: " + data.queuePosition;
+                    if (data.clusterNumber !== null) {
+                        document.getElementById("position").innerText = "Your cluster number: " + data.clusterNumber;
 
                         // Check conditions for redirection
                         if (data.isUserTurn && data.saleStarted) {
                             // Check if the booth has 1 to 3 slots, and the user is in front of the queue
-                            if (data.boothSlots > 0 && data.boothSlots <= 3 && data.queuePosition === 0) {
+                            if (data.boothSlots > 0 && data.boothSlots <= 3 && data.clusterNumber === 1) {
                                 // Redirect to the booth page
                                 window.location.href = "http://127.0.0.1:5001/concert/{{ concert.concert_id }}/enter_booth";
                             } else {
@@ -58,12 +60,12 @@
                             }
                         }
                     } else {
-                        // Handle the case where queuePosition is null (display a message or set a default value)
-                        document.getElementById("position").innerText = "Your position: N/A";
+                        // Handle the case where clusterNumber is null (display a message or set a default value)
+                        document.getElementById("position").innerText = "Your cluster number: N/A";
                     }
                 })
                 .catch(error => console.error("Error:", error));
-            }, 5000); // Check every 5 seconds
+            }, 3000); // Check every 3 seconds
         }
 
         // Call the function to check the waiting room when the page loads
