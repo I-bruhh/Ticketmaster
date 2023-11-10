@@ -30,7 +30,7 @@ def login():
             else:
                 return "Login failed"
 
-    return render_template('login.html')
+    return render_template('login.html', form=form)
 
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
