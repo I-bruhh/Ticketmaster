@@ -28,29 +28,6 @@
         alt="My Profile Picture"
       />
       <h2>{{ user.username }}</h2>
-      <p>Email: {{ user.email }}</p>
-      <p>Location: {{ user.location }}</p>
-      <p>Phone: {{ user.phone }}</p>
-      <a
-        href="{{ url_for('profile.edit_profile') }}"
-        class="edit-profile-button"
-        >Edit Profile</a
-      >
-    </section>
-
-    <section class="profile-description">
-      <h2>About Me</h2>
-      <p>{{ user.about_me }}</p>
-    </section>
-
-    <section class="profile-education">
-      <h2>Education</h2>
-      <p>{{ user.education }}</p>
-    </section>
-
-    <section class="profile-experience">
-      <h2>Work Experience</h2>
-      <p>{{ user.work_experience }}</p>
     </section>
 
     <footer>
