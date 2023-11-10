@@ -4,6 +4,7 @@ from routes.auth import auth_bp
 from routes.concert import concert_bp
 from routes.profile import profile_bp
 from routes.purchase import purchase_bp
+from routes.fairness import fairness_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -14,6 +15,7 @@ app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(concert_bp, url_prefix='/concerts')
 app.register_blueprint(profile_bp, url_prefix='/profile')
 app.register_blueprint(purchase_bp, url_prefix='/purchase')
+app.register_blueprint(fairness_bp, url_prefix='/fairness')
 
 
 @app.route('/')

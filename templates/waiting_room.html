@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Waiting Room</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='concerts.css') }}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="{{ url_for('concert.concerts') }}">Concerts</a></li>
+            <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <h1>Waiting Room</h1>
+
+        <div class="content">
+            <p>You are in the waiting room. Please wait for your turn to purchase tickets.</p>
+            <p id="position-info">Your current position in the queue: <span id="position">{{ queue_position }}</span></p>
+        </div>
+
+        <h1>Concert Details</h1>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Dates</th>
+                <th>Venues</th>
+                <th>Tickets Available</th>
+                <th>Start Ticket Sale</th>
+                <th>End Ticket Sale</th>
+                <th>Limit Per Person</th>
+                <th>Total Tickets for Sale</th>
+            </tr>
+            <tr>
+                <td>{{ concert.name }}</td>
+                <td>
+                    {% for date in concert['dates'] %}
+                        {{ date }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for venue in concert['venues'] %}
+                        {{ venue }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for category in concert['categories'] %}
+                        {{ category }}<br>
+                    {% endfor %}
+                </td>
+                <td>{{ concert['start_ticket_sale'] }}</td>
+                <td>{{ concert['end_ticket_sale'] }}</td>
+                <td>{{ concert['limit_per_person'] }}</td>
+                <td>{{ concert['total_tickets_for_sale'] }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        // JavaScript function to check the start_ticket_sale date
+        function checkTicketSaleDate() {
+            var startTicketSaleDate = new Date("{{ concert.start_ticket_sale }}");
+            var currentDate = new Date();
+
+            if (currentDate >= startTicketSaleDate) {
+                // If the start_ticket_sale date has passed, display the virtual queue position
+                document.getElementById("position").innerText = "Your position: " + {{ queue_position }};
+            }
+        }
+
+        // Call the function to check the date when the page loads
+        window.onload = checkTicketSaleDate;
+    </script>
+</body>
+</html>
