@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Booth Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='concerts.css') }}">
     <script>
         function showPopup(message) {
             alert(message);
@@ -21,7 +21,7 @@
 
     <h1>Booth Page</h1>
     <h2>Select Date, Venue, Ticket Category, and Quantity</h2>
-    <form action="{{ url_for('purchase.summary', concert_id=concert.id) }}" method="post">
+    <form action="{{ url_for('purchase.summary', concert_id=concert.concert_id) }}" method="post">
         <input type="hidden" name="concert_name" value="{{ concert.name }}">
         <input type="hidden" name="concert_id" value="{{ concert.id }}">
         <label for="date">Select Date:</label>

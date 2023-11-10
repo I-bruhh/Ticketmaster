@@ -51,7 +51,7 @@
                         // Check conditions for redirection
                         if (data.isUserTurn && data.saleStarted) {
                             // Check if the booth has 1 to 3 slots, and the user is in front of the queue
-                            if (data.boothSlots > 0 && data.boothSlots <= 3 && data.clusterNumber === 1) {
+                            if (data.boothSlots > 0 && data.clusterNumber === 0) {
                                 // Redirect to the booth page
                                 window.location.href = "http://127.0.0.1:5001/concert/{{ concert.concert_id }}/enter_booth";
                             } else {
@@ -65,7 +65,7 @@
                     }
                 })
                 .catch(error => console.error("Error:", error));
-            }, 3000); // Check every 3 seconds
+            }, 4000); // Check every 3 seconds
         }
 
         // Call the function to check the waiting room when the page loads
