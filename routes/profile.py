@@ -72,6 +72,6 @@ def edit_profile():
         except Exception as e:
             return str(e), 500
 
-    return redirect(url_for("login"))
+    return render_template("edit_profile.html")
 
 # Add more profile-related routes

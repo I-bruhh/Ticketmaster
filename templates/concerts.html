@@ -25,7 +25,7 @@
     <nav>
       <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="{{ url_for('concerts.concerts') }}">Concerts</a></li>
+        <li><a href="{{ url_for('concert.concerts') }}">Concerts</a></li>
         <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
       </ul>
     </nav>
@@ -46,7 +46,7 @@
       <tr>
         <td>
           <a
-            href="{{ url_for('concerts.concert_detail', concert_id=concert.concert_id) }}"
+            href="{{ url_for('concert.concert_detail', concert_id=concert.concert_id) }}"
             >{{ concert.name }}</a
           >
         </td>

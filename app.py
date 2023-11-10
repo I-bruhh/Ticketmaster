@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for
 from config import Config
 from routes.auth import auth_bp
-from routes.concert import concerts_bp
+from routes.concert import concert_bp
 from routes.profile import profile_bp
 from routes.purchase import purchase_bp
 
@@ -11,7 +11,7 @@ app.secret_key = 'your_secret_key'
 
 
 app.register_blueprint(auth_bp, url_prefix='/auth')
-app.register_blueprint(concerts_bp, url_prefix='/concerts')
+app.register_blueprint(concert_bp, url_prefix='/concerts')
 app.register_blueprint(profile_bp, url_prefix='/profile')
 app.register_blueprint(purchase_bp, url_prefix='/purchase')
 

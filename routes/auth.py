@@ -17,7 +17,7 @@ def login():
         if status_code == 200:
             if user_data and check_password_hash(user_data['password'], password):
                 session['username'] = user_data['username']
-                return redirect(url_for('concerts.concerts'))
+                return redirect(url_for('concert.concerts'))
             else:
                 return "Login failed"
 

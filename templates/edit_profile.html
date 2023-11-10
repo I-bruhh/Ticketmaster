@@ -8,8 +8,8 @@
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/concerts">Concerts</a></li>
-            <li><a href="/profile">Profile</a></li>
+            <li><a href="{{ url_for('concert.concerts') }}">Concerts</a></li>
+            <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
         </ul>
     </nav>
 
