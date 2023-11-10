@@ -22,25 +22,19 @@
         <div class="login-form">
           <h2>Login</h2>
 
-          <form method="POST">
-            <label for="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Username"
-              required
-            />
+          <form method="POST" action="{{ url_for('auth.login') }}">
+            {{ form.hidden_tag() }}
 
-            <label for="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Password"
-              required
-            />
+            <label for="{{ form.username.id }}">Username</label>
+            {{ form.username(class="form-control", placeholder="Username", required="required") }}
 
+            <label for="{{ form.password.id }}">Password</label>
+            {{ form.password(class="form-control", placeholder="Password", required="required") }}
+
+            {{ form.recaptcha() }}
+            {% for error in form.recaptcha.errors %}
+            <p style="color:red;">{{ error }}</p>
+            {% endfor %}
             <input type="submit" value="Login" />
           </form>
 

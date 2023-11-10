@@ -1,19 +1,28 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from werkzeug.security import check_password_hash, generate_password_hash
 import routes.auth_db as auth_db
+from flask_wtf import FlaskForm, RecaptchaField, Recaptcha
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import InputRequired
+
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[InputRequired()])
+    password = PasswordField('Password', validators=[InputRequired()])
+    recaptcha = RecaptchaField(validators=[Recaptcha(message="You are detected to possibly be a bot!")])
+    submit = SubmitField()
 
 auth_bp = Blueprint('auth', __name__)
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+    form = LoginForm()
+    if request.method == "POST" and form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
 
         data, status_code = auth_db.get_user_by_username(username)
         user_data = data.get_json()
-
         if status_code == 200:
             if user_data and check_password_hash(user_data['password'], password):
                 session['username'] = user_data['username']
@@ -21,7 +30,7 @@ def login():
             else:
                 return "Login failed"
 
-    return render_template('login.html')
+    return render_template('login.html', form=form)
 
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
