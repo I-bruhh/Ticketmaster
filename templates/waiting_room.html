@@ -1,75 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Waiting Room</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='concerts.css') }}">
-</head>
-<body>
-<nav>
-  <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="{{ url_for('concert.concerts') }}">Concerts</a></li>
-    <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
-    <!-- Add the following line for the logout link -->
-    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-  </ul>
-</nav>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='concerts.css') }}"
+    />
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="{{ url_for('concert.concerts') }}">Concerts</a></li>
+        <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
+        <!-- Add the following line for the logout link -->
+        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+      </ul>
+    </nav>
 
-    <div class="content">
+    <div class="container">
+      <header>
         <h1>Waiting Room</h1>
+      </header>
 
+      <main>
         <div class="content">
-            <p>You are in the waiting room. Please wait for your turn to purchase tickets.</p>
-            <p id="position-info">Your current cluster number: <span id="position">{{ cluster_number }}</span></p>
+          <p>
+            You are in the waiting room. Please wait for your turn to purchase
+            tickets.
+          </p>
+          <p id="position-info">
+            Your current cluster number:
+            <span id="position">{{ cluster_number }}</span>
+          </p>
         </div>
-
-        <h1>Concert Details</h1>
-        <table>
-            <!-- Your concert details table here -->
-        </table>
+      </main>
+      <div id="loading-spinner" style="display: none; text-align: center">
+        <div class="loader"></div>
+      </div>
     </div>
 
     <script>
-        function checkWaitingRoom() {
-            setInterval(function () {
-                // Perform AJAX request to check user's position and turn
-                fetch("http://127.0.0.1:5001/concert/{{ concert.concert_id }}/user_status", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        // You may need to include additional headers based on your server requirements
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Update UI based on server response
-                    if (data.clusterNumber !== null) {
-                        document.getElementById("position").innerText = "Your cluster number: " + data.clusterNumber;
+      function showLoading() {
+        // Show a loading spinner while waiting for the server response
+        document.getElementById("loading-spinner").style.display = "block";
+      }
 
-                        // Check conditions for redirection
-                        if (data.isUserTurn && data.saleStarted) {
-                            //  Check the user is in the front cluster
-                            if (data.clusterNumber === 0) {
-                                // Redirect to the booth page
-                                window.location.href = "http://127.0.0.1:5001/concert/{{ concert.concert_id }}/enter_booth";
-                            } else {
-                                // Refresh the page every 30 seconds
-                                setTimeout(() => location.reload(), 10000);
-                            }
-                        }
-                    } else {
-                        // Handle the case where clusterNumber is null (display a message or set a default value)
-                        document.getElementById("position").innerText = "Your cluster number: N/A";
-                    }
-                })
-                .catch(error => console.error("Error:", error));
-            }, 4000); // Check every 4 seconds
-        }
+      function hideLoading() {
+        // Hide the loading spinner when the response is received
+        document.getElementById("loading-spinner").style.display = "none";
+      }
 
-        // Call the function to check the waiting room when the page loads
-        window.onload = checkWaitingRoom;
+      function redirectToBooth() {
+        // Show loading spinner before redirection
+        showLoading();
+        // Wait for 3 seconds before redirecting
+        setTimeout(function () {
+          // Redirect to the booth page
+          window.location.href =
+            "http://127.0.0.1:5001/concert/{{ concert.concert_id }}/enter_booth";
+        }, 3000);
+      }
+
+      function checkWaitingRoom() {
+        setInterval(function () {
+          // Show loading spinner while waiting for the server response
+          showLoading();
+          // Perform AJAX request to check user's position and turn
+          fetch(
+            "http://127.0.0.1:5001/concert/{{ concert.concert_id }}/user_status",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+            .then((response) => {
+              // Hide loading spinner when the response is received
+              hideLoading();
+              return response.json();
+            })
+            .then((data) => {
+              // Update UI based on server response
+              if (data.clusterNumber !== null) {
+                document.getElementById("position").innerText =
+                  "Your cluster number: " + data.clusterNumber;
+
+                // Check conditions for redirection
+                if (data.isUserTurn && data.saleStarted) {
+                  // Check the user is in the front cluster
+                  if (data.clusterNumber === 0) {
+                    // Call redirectToBooth function
+                    redirectToBooth();
+                  } else {
+                    // Refresh the page every 30 seconds
+                    setTimeout(() => location.reload(), 10000);
+                  }
+                }
+              } else {
+                // Handle the case where clusterNumber is null (display a message or set a default value)
+                document.getElementById("position").innerText =
+                  "Your cluster number: N/A";
+              }
+            })
+            .catch((error) => {
+              // Hide loading spinner in case of an error
+              hideLoading();
+              console.error("Error:", error);
+            });
+        }, 4000); // Check every 4 seconds
+      }
+
+      // Call the function to check the waiting room when the page loads
+      window.onload = function () {
+        checkWaitingRoom();
+        // Hide the loading spinner initially
+        hideLoading();
+      };
     </script>
-</body>
+  </body>
 </html>
