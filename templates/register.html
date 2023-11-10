@@ -1,40 +1,39 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Register</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
-  </head>
-  <body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Ticket Master</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% if message %}
+      <p>{{ message }}</p>
+    {% endif %}
     <div class="container">
-      <header>
-        <h1>Ticket Master</h1>
-      </header>
-      <main>
-        <div class="login-form">
-          <h2>Register</h2>
-          <form method="POST">
-            <input
-              type="text"
-              name="username"
-              placeholder="Username"
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-            />
-            <input type="submit" value="Register" />
-          </form>
-        </div>
-      </main>
-      <footer>
-        <p>&copy; 2023 Ticket Master</p>
-      </footer>
+        <header>
+            <h1>Ticket Master</h1>
+        </header>
+        <main>
+            <div class="login-form">
+                <h2>Register</h2>
+                <form method="POST">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+                    <input type="submit" value="Register">
+
+                    <!-- Add the Back to Login button -->
+                    <p>Have an account already? <a href="{{ url_for('auth.login') }}">Login</a></p>
+                </form>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2023 Ticket Master</p>
+        </footer>
     </div>
-  </body>
+</body>
 </html>

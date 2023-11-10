@@ -50,9 +50,21 @@
             >{{ concert.name }}</a
           >
         </td>
-        <td>{{ concert['dates'] }}</td>
-        <td>{{ concert['venues'] }}</td>
-        <td>{{ concert['categories'] }}</td>
+        <td>
+          {% for date in concert['dates'] %}
+          {{ date }}<br>
+          {% endfor %}
+        </td>
+        <td>
+          {% for venue in concert['venues'] %}
+          {{ venue }}<br>
+          {% endfor %}
+        </td>
+        <td>
+          {% for category in concert['categories'] %}
+          ${{ category }}<br>
+          {% endfor %}
+        </td>
         <td>{{ concert['start_ticket_sale'] }}</td>
         <td>{{ concert['end_ticket_sale'] }}</td>
         <td>{{ concert['limit_per_person'] }}</td>

@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Concert Details</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='concerts.css') }}">
 </head>
 <body>
     <nav>
@@ -27,15 +27,27 @@
         </tr>
         <tr>
             <td>{{ concert.name }}</td>
-            <td>{{ concert['dates'] | join('') }}</td>
-            <td>{{ concert['venues'] | join('') }}</td>
-            <td>{{ concert['categories'] | join('') }}</td>
+            <td>
+              {% for date in concert['dates'] %}
+              {{ date }}<br>
+              {% endfor %}
+            </td>
+            <td>
+              {% for venue in concert['venues'] %}
+              {{ venue }}<br>
+              {% endfor %}
+            </td>
+            <td>
+              {% for category in concert['categories'] %}
+              {{ category }}<br>
+              {% endfor %}
+            </td>
             <td>{{ concert['start_ticket_sale'] }}</td>
             <td>{{ concert['end_ticket_sale'] }}</td>
             <td>{{ concert['limit_per_person'] }}</td>
             <td>{{ concert['total_tickets_for_sale'] }}</td>
         </tr>
     </table>
-    <a href="{{ url_for('ticket_fairness.waiting_room', concert_id=concert.id) }}"><button>Buy Tickets</button></a>
+    <a href="http://127.0.0.1:5001/concert/2/waiting_room"><button>Buy Tickets</button></a>
 </body>
 </html>

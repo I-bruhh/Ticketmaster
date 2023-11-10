@@ -4,6 +4,7 @@ import routes.auth_db as auth_db
 
 auth_bp = Blueprint('auth', __name__)
 
+
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -12,7 +13,7 @@ def login():
 
         data, status_code = auth_db.get_user_by_username(username)
         user_data = data.get_json()
-        
+
         if status_code == 200:
             if user_data and check_password_hash(user_data['password'], password):
                 session['username'] = user_data['username']
@@ -25,6 +26,8 @@ def login():
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
+    message = None
+
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -32,11 +35,13 @@ def register():
         data, status_code = auth_db.get_user_by_username(username)
 
         if status_code == 200:
-            return "Username already exists"
+            message = "Username already exists"
         else:
             user_data = {
                 'username': username,
-                'password': generate_password_hash(password, method='pbkdf2:sha256')
+                'password': generate_password_hash(password, method='pbkdf2:sha256'),
+                'arrival_time': None,
+                'queue_position': None
             }
 
             data, status_code = auth_db.create_user(user_data)
@@ -44,9 +49,9 @@ def register():
             if status_code == 200:
                 return redirect(url_for('auth.login'))
             else:
-                return "User registration failed"
+                message = "User registration failed"
 
-    return render_template('register.html')
+    return render_template('register.html', message=message)
 
 
 @auth_bp.route('/logout', methods=['GET'])
