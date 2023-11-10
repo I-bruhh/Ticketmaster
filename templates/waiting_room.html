@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Waiting Room</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='concerts.css') }}">
 </head>
@@ -23,55 +25,49 @@
 
         <h1>Concert Details</h1>
         <table>
-            <tr>
-                <th>Name</th>
-                <th>Dates</th>
-                <th>Venues</th>
-                <th>Tickets Available</th>
-                <th>Start Ticket Sale</th>
-                <th>End Ticket Sale</th>
-                <th>Limit Per Person</th>
-                <th>Total Tickets for Sale</th>
-            </tr>
-            <tr>
-                <td>{{ concert.name }}</td>
-                <td>
-                    {% for date in concert['dates'] %}
-                        {{ date }}<br>
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for venue in concert['venues'] %}
-                        {{ venue }}<br>
-                    {% endfor %}
-                </td>
-                <td>
-                    {% for category in concert['categories'] %}
-                        {{ category }}<br>
-                    {% endfor %}
-                </td>
-                <td>{{ concert['start_ticket_sale'] }}</td>
-                <td>{{ concert['end_ticket_sale'] }}</td>
-                <td>{{ concert['limit_per_person'] }}</td>
-                <td>{{ concert['total_tickets_for_sale'] }}</td>
-            </tr>
+            <!-- Your concert details table here -->
         </table>
     </div>
 
     <script>
-        // JavaScript function to check the start_ticket_sale date
-        function checkTicketSaleDate() {
-            var startTicketSaleDate = new Date("{{ concert.start_ticket_sale }}");
-            var currentDate = new Date();
+        function checkWaitingRoom() {
+            setInterval(function () {
+                // Perform AJAX request to check user's position and turn
+                fetch("http://127.0.0.1:5001/concert/{{ concert.concert_id }}/user_status", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        // You may need to include additional headers based on your server requirements
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Update UI based on server response
+                    if (data.queuePosition !== null) {
+                        document.getElementById("position").innerText = "Your position: " + data.queuePosition;
 
-            if (currentDate >= startTicketSaleDate) {
-                // If the start_ticket_sale date has passed, display the virtual queue position
-                document.getElementById("position").innerText = "Your position: " + {{ queue_position }};
-            }
+                        // Check conditions for redirection
+                        if (data.isUserTurn && data.saleStarted) {
+                            // Check if the booth has 1 to 3 slots, and the user is in front of the queue
+                            if (data.boothSlots > 0 && data.boothSlots <= 3 && data.queuePosition === 0) {
+                                // Redirect to the booth page
+                                window.location.href = "http://127.0.0.1:5000/concert/concert.concert_id/booth";
+                            } else {
+                                // Refresh the page every 30 seconds
+                                setTimeout(() => location.reload(), 10000);
+                            }
+                        }
+                    } else {
+                        // Handle the case where queuePosition is null (display a message or set a default value)
+                        document.getElementById("position").innerText = "Your position: N/A";
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            }, 5000); // Check every 5 seconds
         }
 
-        // Call the function to check the date when the page loads
-        window.onload = checkTicketSaleDate;
+        // Call the function to check the waiting room when the page loads
+        window.onload = checkWaitingRoom;
     </script>
 </body>
 </html>
