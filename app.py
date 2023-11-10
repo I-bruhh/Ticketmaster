@@ -10,13 +10,14 @@ app = Flask(__name__)
 app.config.from_object(Config)
 app.secret_key = 'your_secret_key'
 
+app.config["RECAPTCHA_PUBLIC_KEY"] = "6LcTesEoAAAAAIsnUXGhtHwFIa5zsLeWMrdUX86S"
+app.config["RECAPTCHA_PRIVATE_KEY"] = "6LcTesEoAAAAAKkqkiPP9Zfw3b_Byki5VIn0RiKS"
 
 app.register_blueprint(auth_bp, url_prefix='/auth')
 app.register_blueprint(concert_bp, url_prefix='/concerts')
 app.register_blueprint(profile_bp, url_prefix='/profile')
 app.register_blueprint(purchase_bp, url_prefix='/purchase')
 app.register_blueprint(fairness_bp, url_prefix='/fairness')
-
 
 @app.route('/')
 def index():
