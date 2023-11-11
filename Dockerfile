@@ -35,9 +35,7 @@ RUN adduser \
 RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt \
-    pip install clang \
-    pip install boto3 \
-    pip install flask_wtf
+    pip install clang 
 
 # Set AWS credentials as environment variables
 ENV AWS_ACCESS_KEY_ID=AKIA2RDWGAQQAOLV3BDA
