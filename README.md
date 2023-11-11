@@ -9,7 +9,7 @@ Ticket scalping remains a prevalent issue, impacting consumers and event organiz
 ## Dependancies required
 
 - **Flask:**
-- To install: run on env terminal "pip install Flask"
+- To install: run on env terminal "pip install flask"
 
 - **Config:**
 - To install: run on env terminal "pip install config"
@@ -20,6 +20,11 @@ Ticket scalping remains a prevalent issue, impacting consumers and event organiz
 - **Flask_WTF:**
 - To install: run on env terminal "pip install flask_wtf"
 
+- **Flask_Cors:**
+- To install: run on env terminal "pip install flask_cors"
+
+- **Flask_Session:**
+- To install: run on env terminal "pip install flask_session"
 
 ## System Design
 
@@ -30,7 +35,6 @@ Our system architecture incorporates the following components:
 - **Frontend:** Python Flask for an interactive and responsive user interface.
 - **Microservices:** Two essential microservices - Authentication/TicketMaster and Fairness Algorithm for secure user access and fair data processing.
 - **Backend:** Amazon DynamoDB, a NoSQL database, for efficient data storage.
-
 
 ### B. Cloud-Native Framework Integration
 
