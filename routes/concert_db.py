@@ -7,11 +7,12 @@ dynamodb = boto3.client('dynamodb')
 # Define the DynamoDB table name for Concerts
 CONCERTS_TABLE_NAME = 'Concert'
 
+
 def get_all_concerts():
     try:
         # Access the DynamoDB table to list all concerts
         response = dynamodb.scan(
-            TableName = CONCERTS_TABLE_NAME
+            TableName=CONCERTS_TABLE_NAME
         )
         items = response.get('Items', [])
         concerts = []
@@ -34,11 +35,12 @@ def get_all_concerts():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
 def get_concert_by_id(concert_id):
     try:
         # Access the DynamoDB table to get a specific concert by concert_id
         response = dynamodb.get_item(
-            TableName = CONCERTS_TABLE_NAME,
+            TableName=CONCERTS_TABLE_NAME,
             Key={
                 'concert_id': {
                     'N': str(concert_id)
@@ -63,5 +65,3 @@ def get_concert_by_id(concert_id):
             return jsonify({'message': 'Concert not found'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-# Other functions for creating, updating, and deleting concerts can be added here

@@ -41,6 +41,7 @@ def summary(concert_id):
 def confirm():
     purchase_data = session.get('purchase_data', {})
 
+    print(purchase_data)
     purchase_db.create_purchase(purchase_data)
 
     return redirect(url_for("concert.concerts", purchase_data=purchase_data))

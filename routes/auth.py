@@ -5,11 +5,13 @@ from flask_wtf import FlaskForm, RecaptchaField, Recaptcha
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired
 
+
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
     password = PasswordField('Password', validators=[InputRequired()])
     recaptcha = RecaptchaField(validators=[Recaptcha(message="You are detected to possibly be a bot!")])
     submit = SubmitField()
+
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -48,9 +50,7 @@ def register():
         else:
             user_data = {
                 'username': username,
-                'password': generate_password_hash(password, method='pbkdf2:sha256'),
-                'arrival_time': None,
-                'queue_position': None
+                'password': generate_password_hash(password, method='pbkdf2:sha256')
             }
 
             data, status_code = auth_db.create_user(user_data)
