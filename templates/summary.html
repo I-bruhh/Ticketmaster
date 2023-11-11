@@ -2,26 +2,41 @@
 <html>
 <head>
     <title>Cart summary</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='concerts.css') }}">
+    <style>
+        /* Styles for the modal */
+        #confirmationModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            z-index: 1000;
+        }
+    </style>
     <script>
-    // JavaScript function to show a popup message
-    function showPopup(message) {
-        alert(message);
-    }
+        // JavaScript function to show the confirmation modal
+        function showConfirmationModal(message) {
+            document.getElementById('confirmationMessage').innerText = message;
+            document.getElementById('confirmationModal').style.display = 'block';
+        }
 
-    // Check if the message parameter is present in the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const message = urlParams.get('message');
+        // JavaScript function to hide the confirmation modal
+        function hideConfirmationModal() {
+            document.getElementById('confirmationModal').style.display = 'none';
+        }
 
-    // Display the message in a popup if it exists
-    if (message) {
-        showPopup(message);
-    }
+        document.getElementById('purchaseForm').addEventListener('submit', function (event) {
+            // Prevent the form from submitting immediately
+            event.preventDefault();
 
-    // Function to redirect to the ticket_master_dashboard
-    function redirectToDashboard() {
-        window.location.href = "{{ url_for('concerts.concerts') }}";
-    }
+            // Show the confirmation modal
+            showConfirmationModal('Confirm purchase summary: Concert: {{ concert.name }}, Date: {{ selected_options.date }}, Venue: {{ selected_options.venue }}, Category: {{ selected_options.category }}, Quantity: {{ selected_options.quantity }}');
+        });
     </script>
 </head>
 <body>
@@ -55,7 +70,7 @@
     </table>
 
     <h2>Payment</h2>
-    <form action="{{ url_for('purchase.confirm', concert_id=concert.id) }}" method="post">
+    <form id="purchaseForm" action="http://127.0.0.1:5001/concert/{{ concert.concert_id }}/return_booth" method="post">
         <input type="hidden" name="concert_id" value="{{ concert.id }}">
         <input type="hidden" name="concert_name" value="{{ concert.name }}">
         <input type="hidden" name="concert_date" value="{{ selected_options.date }}">
@@ -74,8 +89,12 @@
         <label for="cvv">CVV:</label>
         <input type="text" id="cvv" name="cvv" value="123">
 
-        <input type="submit" value="Purchase Tickets" onclick="showPopup('Confirm purchase summary: Concert: {{ concert.name }}, Date: {{ selected_options.date }}, Venue: {{ selected_options.venue }}, Category: {{ selected_options.category }}, Quantity: {{ selected_options.quantity }}')">
+        <input type="button" value="Purchase Tickets" onclick="showConfirmationModal('Confirm purchase summary: Concert: {{ concert.name }}, Date: {{ selected_options.date }}, Venue: {{ selected_options.venue }}, Category: {{ selected_options.category }}, Quantity: {{ selected_options.quantity }}')">
     </form>
-
+    <div id="confirmationModal">
+        <p id="confirmationMessage"></p>
+        <button onclick="hideConfirmationModal()">Cancel</button>
+        <button onclick="document.getElementById('purchaseForm').submit(); hideConfirmationModal()">OK</button>
+    </div>
 </body>
 </html>

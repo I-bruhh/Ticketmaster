@@ -1,4 +1,5 @@
 from flask import Flask, redirect, url_for
+from flask_session import Session
 from config import Config
 from routes.auth import auth_bp
 from routes.concert import concert_bp
@@ -7,6 +8,9 @@ from routes.purchase import purchase_bp
 from routes.fairness import fairness_bp
 
 app = Flask(__name__)
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_KEY_PREFIX'] = 'your_prefix'
+Session(app)
 app.config.from_object(Config)
 app.secret_key = 'your_secret_key'
 

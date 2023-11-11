@@ -79,8 +79,19 @@
       }
     </style>
     <script>
-      function showPopup(message) {
-        alert(message);
+      function validateForm() {
+        var date = document.getElementById('date').value;
+        var venue = document.getElementById('venue').value;
+        var category = document.getElementById('category').value;
+        var quantity = document.getElementById('quantity').value;
+
+        // Perform validation checks
+        if (date === '' || venue === '' || category === '' || quantity === '') {
+          alert('Please fill in all fields');
+          return false;
+        }
+
+        return true;
       }
     </script>
   </head>
@@ -98,6 +109,7 @@
     <form
       action="{{ url_for('purchase.summary', concert_id=concert.concert_id) }}"
       method="post"
+      onsubmit="return validateForm()"
     >
       <input type="hidden" name="concert_name" value="{{ concert.name }}" />
       <input type="hidden" name="concert_id" value="{{ concert.id }}" />
