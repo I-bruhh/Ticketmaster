@@ -26,6 +26,13 @@ Ticket scalping remains a prevalent issue, impacting consumers and event organiz
 - **Flask_Session:**
 - To install: run on env terminal "pip install flask_session"
 
+## AWS credentials as environment variables in a Dockerfile
+
+- ENV AWS_ACCESS_KEY_ID=AKIA2RDWGAQQAOLV3BDA
+- ENV AWS_SECRET_ACCESS_KEY=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
+- ENV AWS_DEFAULT_REGION=ap-southeast-1
+- Default output format [None]: json
+
 ## System Design
 
 ### A. System Architecture Components
