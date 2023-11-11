@@ -1,4 +1,4 @@
-# FairTicketonChain
+# FairTicketMaster
 
 FairTicketonChain is an innovative Anti-Scalping Booking System designed to combat ticket scalping, leveraging Cloud and Distributed Computing technologies for enhanced scalability and performance.
 
