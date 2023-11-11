@@ -92,7 +92,7 @@
                 // Check conditions for redirection
                 if (data.isUserTurn && data.saleStarted) {
                   // Check the user is in the front cluster
-                  if (data.clusterNumber === 0) {
+                  if (data.clusterNumber === 0 && data.boothReady) {
                     // Call redirectToBooth function
                     redirectToBooth();
                   } else {
@@ -111,7 +111,7 @@
               hideLoading();
               console.error("Error:", error);
             });
-        }, 4000); // Check every 4 seconds
+        }, 5000); // Check every 5 seconds
       }
 
       // Call the function to check the waiting room when the page loads
